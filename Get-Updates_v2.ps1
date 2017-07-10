@@ -1,8 +1,12 @@
 ﻿#Function to get installed updates for the last 30 days, sort by InstalledOn and export the results to a CSV on the current users desktop
 
-function Get-Updates {  
+function Get-Updates { 
+
+#You must have a "servers.txt" at "$env:USERPROFILE\Desktop\servers.txt" list of all the servers you want to scan for installed updates
+
 $servers = Get-Content $env:USERPROFILE\Desktop\servers.txt    
-$ErrorActionPreference = 'Stop'    
+$ErrorActionPreference = 'Stop' 
+   
 ForEach ($computer in $servers) {   
   
   try   
