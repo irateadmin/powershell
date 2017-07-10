@@ -12,9 +12,10 @@ ForEach ($computer in $servers) {
   try   
     {  
  
-Get-HotFix -cn $computer | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
+Get-HotFix -ComputerName $computer | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
 Where { $_.InstalledOn -gt (Get-Date).AddDays(-30) } |
-sort InstalledOn | Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_30_Days.csv
+sort InstalledOn |
+Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_30_Days.csv
    
     }  
   
