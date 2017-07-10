@@ -26,5 +26,8 @@ Add-content $computer -path "$env:USERPROFILE\Desktop\Unreachable_Servers.txt"
     }   
 }  
   
-}  
+}
+
+#Call Function
+  
 Get-Updates
