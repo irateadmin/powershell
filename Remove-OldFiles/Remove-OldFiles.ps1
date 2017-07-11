@@ -1,5 +1,5 @@
 #Set the paths from the txt file
-$SourceDirList = Get-Content $env:USERPROFILE\Paths_of_files_to_clean_up.txt
+$SourceDirList = Get-Content C:\PowerShell\Remove-OldFiles\Paths_of_files_to_clean_up.txt
 
 
 $TimeStamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
