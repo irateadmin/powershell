@@ -1,9 +1,5 @@
-# fake reading in a list
-#    in real life, use Get-Content
-$SourceDirList = @"
-c:\temp
-d:\temp
-"@.Split("`n").Trim()
+#Set the paths from the txt file
+$SourceDirList = Get-Content $env:USERPROFILE\Paths_of_files_to_clean_up.txt
 
 
 $TimeStamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
@@ -17,15 +13,13 @@ $Today = Get-Date
 
 $Results = foreach ($SourceDir in $SourceDirList)
     {
-    # -Force gets hidden files and folders
-    #    is it really neeeded here?
-    $FileList = Get-ChildItem -Path $SourceDir -File -Recurse -Force
+    $FileList = Get-ChildItem -Path $SourceDir -File -Recurse
     foreach ($File in $FileList)
         {
         $DaysOld = ($Today - $File.LastAccessTime).Days
         if ($DaysOld -gt $MaxDaysOld)
             {
-            # remove the -WhatIf to do it for real
+            #Remove the -WhatIf to do it for real
             Remove-Item -LiteralPath $File.FullName -Force -WhatIf
             $Line = "{0,4}    {1}" -f $DaysOld, $File.FullName
 
