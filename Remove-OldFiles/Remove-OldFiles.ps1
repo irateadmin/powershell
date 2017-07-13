@@ -19,8 +19,7 @@ $Results = foreach ($SourceDir in $SourceDirList)
         $DaysOld = ($Today - $File.LastAccessTime).Days
         if ($DaysOld -gt $MaxDaysOld)
             {
-            #Remove the -WhatIf to do it for real
-            Remove-Item -LiteralPath $File.FullName -Force -WhatIf
+            Remove-Item -LiteralPath $File.FullName -Force
             $Line = "{0,4}    {1}" -f $DaysOld, $File.FullName
 
             $Line
