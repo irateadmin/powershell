@@ -8,19 +8,19 @@ $ErrorActionPreference = 'Stop'
 $days = Read-Host "How many days back do you want to check for installed updates?"
 
 #Store ForEach output in $Output   
-$Output = ForEach ($computer in $servers) {   
+$Output = ForEach ($server in $servers) {   
   
   try   
     {  
  
-Get-HotFix -ComputerName $computer | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
+Get-HotFix -ComputerName $server | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
 Where { $_.InstalledOn -gt (Get-Date).AddDays(-$days) } | sort InstalledOn   
     }  
   
 catch   
   
     {  
-Add-content $computer -path "$env:USERPROFILE\Desktop\Unreachable_Servers.txt" 
+Add-content $server -path "$env:USERPROFILE\Desktop\Unreachable_Servers.txt" 
     }   
 }  
 
