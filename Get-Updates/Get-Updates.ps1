@@ -2,7 +2,6 @@
 #You must have a "servers.txt" at "$env:USERPROFILE\Desktop\servers.txt" list of all the servers you want to scan for installed updates
 
 $servers = Get-Content $env:USERPROFILE\Desktop\servers.txt    
-$ErrorActionPreference = 'Stop' 
 
 #Ask user for how many days of updates they want
 $days = Read-Host "How many days back do you want to check for installed updates?"
