@@ -1,8 +1,7 @@
 #Get installed updates for the last userinput days, sort by InstalledOn and export the results to a CSV on the current users desktop
-#You must have a "servers.txt" at "$env:USERPROFILE\Desktop\servers.txt" list of all the servers you want to scan for installed updates
+#If you want to scan a list you should have "servers.txt" at "$env:USERPROFILE\Desktop\servers.txt" to scan for installed updates
 
 #Ask user for how many days of updates they want
-
 do
 {
    try
