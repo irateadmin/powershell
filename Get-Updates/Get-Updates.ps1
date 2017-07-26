@@ -43,7 +43,7 @@ $Output = ForEach ($server in $user_input_computer) {
     }
     #Write $Output to .csv
     $Output | Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_"$days"_Days.csv
-    Write-Host "Your scan is complete. The list is located here: '$env:USERPROFILE\Desktop\Installed_Updates_Last_"$days"_Days.csv'" -ForegroundColor Green 
+    Write-Host "Your scan is complete. The list is located here: '$env:USERPROFILE\Desktop\Installed_Updates_Last_'$days'_Days.csv'" -ForegroundColor Green 
     } 
 # Check if servers.txt exists and save result
 $testpathservers = Test-Path $env:USERPROFILE\Desktop\servers.txt
@@ -58,7 +58,7 @@ If (-not $testpathservers) {
     Write-Host "A servers.txt file was not found here: '$env:USERPROFILE\Desktop\servers.txt'" -ForegroundColor Red -BackgroundColor Black
     Write-Host "You may enter a single computer name to scan." -ForegroundColor Red -BackgroundColor Black
     $user_input_computer = Read-Host "What computer would you like to scan?"
-    Write-Host "This may take several minutes to complete your scan. Please be patient." -ForegroundColor Green
+    Write-Host "It may take several minutes to complete your scan. Please be patient." -ForegroundColor Green
     userinput  
     }
     else {
@@ -66,4 +66,4 @@ If (-not $testpathservers) {
     nouserinput
     }
     Write-Host " "
-    Read-Host "Press Enter to exit..."
+    Read-Host "Press Enter to exit"
