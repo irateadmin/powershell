@@ -2,7 +2,7 @@
 #You must have a "servers.txt" at "$env:USERPROFILE\Desktop\servers.txt" list of all the servers you want to scan for installed updates
 
 #Ask user for how many days of updates they want
-$days = Read-Host "How many days back do you want to check for installed updates?"
+$days = Read-Host "`nHow many days back do you want to check for installed updates?"
 
 Function userinput {
 $Output = ForEach ($server in $user_input_computer) {   
@@ -56,23 +56,16 @@ If ($testpathunreachable_machines -eq $true) {
     }
 
 If (-not $testpathservers) {
-    Write-Host "A servers.txt file was not found here: '$env:USERPROFILE\Desktop\servers.txt'" -ForegroundColor Red -BackgroundColor Black
-    Write-Host " "
-    Write-Host "You may enter a single computer name to scan." -ForegroundColor Green
-    Write-Host " "
+    Write-Host "`nA servers.txt file was not found here: '$env:USERPROFILE\Desktop\servers.txt'`n" -ForegroundColor Red -BackgroundColor Black
+    Write-Host "You may enter a single computer name to scan.`n" -ForegroundColor Green
     $user_input_computer = Read-Host "What computer would you like to scan?"
-    Write-Host " "
-    Write-Host "It may take several minutes to complete your scan. Please be patient." -ForegroundColor Green
-    Write-Host " "
+    Write-Host "`nIt may take several minutes to complete your scan. Please be patient.`n" -ForegroundColor Green
     userinput  
     }
     else {
     $servers = Get-Content $env:USERPROFILE\Desktop\servers.txt
-    Write-Host "A servers.txt file was found here: '$env:USERPROFILE\Desktop\servers.txt'" -ForegroundColor Green
-    Write-Host " "
-    Write-Host "It may take several minutes to complete your scan. Please be patient." -ForegroundColor Green
-    Write-Host " "
+    Write-Host "A servers.txt file was found here: '$env:USERPROFILE\Desktop\servers.txt'`n" -ForegroundColor Green
+    Write-Host "It may take several minutes to complete your scan. Please be patient.`n" -ForegroundColor Green
     nouserinput
     }
-    Write-Host " "
-    Read-Host "Press Enter to exit"
+    Read-Host "`nPress Enter to exit"
