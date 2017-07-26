@@ -2,31 +2,41 @@
 #You must have a "servers.txt" at "$env:USERPROFILE\Desktop\servers.txt" list of all the servers you want to scan for installed updates
 
 #Ask user for how many days of updates they want
-$days = Read-Host "`nHow many days back do you want to check for installed updates?"
+
+do
+{
+   try
+   {
+      [Uint16]$days = Read-Host "`nHow many days back do you want to check for installed updates?"
+      $inputOK = $true
+    }
+    catch
+    {
+       Write-Host "`nInvalid input! Please enter a numeric value." -ForegroundColor Red -BackgroundColor Black
+    }
+}
+until ($inputOK)
 
 Function userinput {
 $Output = ForEach ($server in $user_input_computer) {   
   
-   try   
-    {  
-    Get-HotFix -ComputerName $server | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
-    Where { $_.InstalledOn -gt (Get-Date).AddDays(-$days) } | sort InstalledOn   
-    }  
-  
-    catch   
-  
-      {  
-    Add-content $server -path "$env:USERPROFILE\Desktop\Unreachable_Machines.txt"
-    Write-Host "Some machines were unreachable. The list is located here: '$env:USERPROFILE\Desktop\Unreachable_Machines.txt'" -ForegroundColor Red -BackgroundColor Black
-    Write-Host " "
-      }   
-    } 
-    #Write $Output to .csv
-    $Output | Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_"$days"_Days.csv
-    Write-Host "Your scan is complete. The list is located here: '$env:USERPROFILE\Desktop\Installed_Updates_Last_$days`_Days.csv'" -ForegroundColor Green 
-    } 
+try   
+   {  
+   Get-HotFix -ComputerName $server | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
+   Where { $_.InstalledOn -gt (Get-Date).AddDays(-$days) } | sort InstalledOn   
+   }    
+   catch  
+   {  
+   Add-content $server -path "$env:USERPROFILE\Desktop\Unreachable_Machines.txt"
+   Write-Host "Some machines were unreachable. The list is located here: '$env:USERPROFILE\Desktop\Unreachable_Machines.txt'`n" -ForegroundColor Red -BackgroundColor Black
+   }   
+   } 
+   #Write $Output to .csv
+   $Output | Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_"$days"_Days.csv
+   Write-Host "Your scan is complete. The list is located here: '$env:USERPROFILE\Desktop\Installed_Updates_Last_$days`_Days.csv'" -ForegroundColor Green 
+   } 
 
-    function nouserinput {
+function nouserinput {
     $Output = ForEach ($server in $servers) {   
   
     try   
