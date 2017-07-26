@@ -1,27 +1,54 @@
-#Get installed updates for the last 30 days, sort by InstalledOn and export the results to a CSV on the current users desktop
+#Get installed updates for the last userinput days, sort by InstalledOn and export the results to a CSV on the current users desktop
 #You must have a "servers.txt" at "$env:USERPROFILE\Desktop\servers.txt" list of all the servers you want to scan for installed updates
-
-$servers = Get-Content $env:USERPROFILE\Desktop\servers.txt    
 
 #Ask user for how many days of updates they want
 $days = Read-Host "How many days back do you want to check for installed updates?"
 
-#Store ForEach output in $Output   
-$Output = ForEach ($server in $servers) {   
+Function userinput {
+$Output = ForEach ($server in $user_input_computer) {   
   
-  try   
+   try   
     {  
- 
-Get-HotFix -ComputerName $server | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
-Where { $_.InstalledOn -gt (Get-Date).AddDays(-$days) } | sort InstalledOn   
+    Get-HotFix -ComputerName $server | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
+    Where { $_.InstalledOn -gt (Get-Date).AddDays(-$days) } | sort InstalledOn   
     }  
   
-catch   
+    catch   
   
-    {  
-Add-content $server -path "$env:USERPROFILE\Desktop\Unreachable_Servers.txt" 
-    }   
-}  
+      {  
+    Add-content $server -path "$env:USERPROFILE\Desktop\Unreachable_Servers.txt" 
+      }   
+    } 
+    #Write $Output to .csv
+    $Output | Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_"$days"_Days.csv 
+    } 
 
-#Write $Output to .csv 
-$Output | Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_"$days"_Days.csv
+    function nouserinput {
+    $Output = ForEach ($server in $servers) {   
+  
+    try   
+     {   
+    Get-HotFix -ComputerName $server | Select-Object PSComputerName,HotFixID,InstalledOn,InstalledBy  | 
+    Where { $_.InstalledOn -gt (Get-Date).AddDays(-$days) } | sort InstalledOn   
+      }  
+  
+    catch   
+  
+      {  
+    Add-content $server -path "$env:USERPROFILE\Desktop\Unreachable_Servers.txt" 
+      }   
+    }
+    #Write $Output to .csv
+    $Output | Export-CSV $env:USERPROFILE\Desktop\Installed_Updates_Last_"$days"_Days.csv 
+    } 
+
+$testpathservers = Test-Path $env:USERPROFILE\Desktop\servers.txt
+
+If (-not $testpathservers) {
+    $user_input_computer = Read-Host "What computer would you like to scan?"
+    userinput    
+    }
+    else {
+    $servers = Get-Content $env:USERPROFILE\Desktop\servers.txt
+    nouserinput
+    }
