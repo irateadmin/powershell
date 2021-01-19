@@ -1,0 +1,2 @@
+$group = get-msolgroup -Searchstring "vpn users"	| select -ExpandProperty objectid
+Get-MsolGroupMember -GroupObjectid $group -MemberObjectTypes User | Get-MsolUser | Where {$_.UserPrincipalName} | Select UserPrincipalName, @{n="MFA Methods"; e={($_.StrongAuthenticationMethods).MethodType}}, @{n="Default Method"	; e={($_.StrongAuthenticationMethods).IsDefault}} | sort userprincipalname

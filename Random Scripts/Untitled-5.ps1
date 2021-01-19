@@ -1,0 +1,3 @@
+Get-ADUser -filter * -SearchBase "OU=Users,OU=DDIA,DC=deltadentalia,DC=com" -Property samaccountname, enabled, PasswordNeverExpires, PasswordLastSet, lastlogondate, DistinguishedName |
+ Where-Object { $_.DistinguishedName -notlike '*OU=Disabled_Termed_Users,OU=Users,OU=DDIA,DC=deltadentalia,DC=com*' -and $_.DistinguishedName -notlike '*OU=Process Accounts,OU=Users,OU=DDIA,DC=deltadentalia,DC=com*'} | 
+ select samaccountname, enabled, PasswordNeverExpires, PasswordLastSet, lastlogondate | Export-Csv C:\Users\aalbee\Desktop\users.csv -NoTypeInformation
