@@ -1,0 +1,1 @@
+Get-ADUser -Filter * -Properties Name, Manager | Where-Object {($_.manager -ne $Null) -and ($_.Enabled -eq 'True') -and ($_.name -notlike '*admin*') -and ($_.name -notlike '*security*')} | select samaccountname,name,@{Name='Manager';Expression={(Get-ADUser $_.Manager).Name}} |sort samaccountname | Export-Csv C:\Users\aalbee\Desktop\users_with_manager.csv -NoTypeInformation

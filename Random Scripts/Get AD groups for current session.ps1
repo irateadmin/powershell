@@ -1,0 +1,2 @@
+$tableLayout = @{Expression={((New-Object System.Security.Principal.SecurityIdentifier($_.Value)).Translate([System.Security.Principal.NTAccount])).Value};Label="Group Name"}
+([Security.Principal.WindowsIdentity]::GetCurrent()).Claims | FT $tableLayout
